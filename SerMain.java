@@ -9,6 +9,9 @@ class SerMain
     
     public static void main(String[] args)
     { 
+        //Heres the string to try and downlaod
+        // https://github.com/ssebs/testing-serialization/raw/master/temp2.txt
+        
         try{
               String datums = URLDataHelper.getStringDataAsString("https://raw.githubusercontent.com/ssebs/ssebsEngine/master/ssebs%20Engine/Misc/serverTestFile.txt");
       System.out.println(datums);
