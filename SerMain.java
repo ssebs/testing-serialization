@@ -12,7 +12,7 @@ class SerMain
         try{
               String datums = URLDataHelper.getStringDataAsString("https://raw.githubusercontent.com/ssebs/ssebsEngine/master/ssebs%20Engine/Misc/serverTestFile.txt");
       System.out.println(datums);
-      FileOutputStream fos = new FileOutputStream("temp2.out");
+      FileOutputStream fos = new FileOutputStream("temp2.txt");
     	ObjectOutputStream oos = new ObjectOutputStream(fos);
     	Dog d = new Dog("Dog2", 36, 4);
     	oos.writeObject(d);
