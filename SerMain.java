@@ -2,90 +2,87 @@
 import java.io.Serializable;
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 class SerMain
 {
-    
-    
+    private static String myUrl;
+    private static boolean isLocal;
     
     public static void main(String[] args)
     { 
-        //Heres the string to try and downlaod
-        // https://github.com/ssebs/testing-serialization/raw/master/temp2.txt
-        
-        try{
-           // String datums = URLDataHelper.getStringDataAsString("https://raw.githubusercontent.com/ssebs/ssebsEngine/master/ssebs%20Engine/Misc/serverTestFile.txt");
-         //   System.out.println(datums);
-            
-        //    FileInputStream fin = new FileInputStream("temp2.out"); LOCAL FILE
-            InputStream fin = new URL("https://github.com/ssebs/testing-serialization/raw/master/temp2.txt").openStream(); // URL
-            ObjectInputStream ois = new ObjectInputStream(fin);
-            Dog dawg =  (Dog)ois.readObject();
-            ois.close();
-            System.out.println(dawg.toString());
-    
-        }catch(Exception e)
+        // myUrl = "https://github.com/ssebs/testing-serialization/raw/master/temp2.txt"; // Online place
+        // myUrl = "temp.out"; // local place
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter a path or url to a Dog object.");
+        myUrl = scan.nextLine();
+        if(myUrl.startsWith("http"))
         {
-            e.printStackTrace();
+            isLocal = false;
+        } else 
+        {
+            isLocal = true;    
         }
-     
- 
+        
+        System.out.println(readObject(isLocal, myUrl));
+        scan.close();
     }
  
 /**
  * returns a Dog object from a URL from the internet 
  */
- private Dog readObject(String url)
+ private static Dog readObject(boolean isLocal, String path)
  {
-     Dog dawg;
-     try {
-          InputStream fin = new URL(url).openStream(); // URL
+    Dog dawg = null;
+    try 
+    {
+        if(isLocal)
+        {
+            InputStream fin = new FileInputStream(path); //local file
             ObjectInputStream ois = new ObjectInputStream(fin);
-             dawg = (Dog) ois.readObject();
+            dawg = (Dog) ois.readObject();
             ois.close();
-     } catch(Exception e) {
-     }
-     return dawg;
+        }else 
+        {
+            InputStream fin = new URL(path).openStream(); // URL
+            ObjectInputStream ois = new ObjectInputStream(fin);
+            dawg = (Dog) ois.readObject();
+            ois.close();
+        }
+    } catch(Exception e) 
+    {
+        e.printStackTrace();
+    }
+    return dawg;
  }
  
  /**
- * returns a Dog object from a local file
- */
- private Dog readObject(String path)
- {
-     Dog dawg;
-     try {
-          InputStream fin = new FileInputStream(path); //local file
-            ObjectInputStream ois = new ObjectInputStream(fin);
-             dawg = (Dog) ois.readObject();
-            ois.close();
-     } catch(Exception e) {
-     }
-     return dawg;
- }
- /**
   * saves a Dog object to a path
   */
- private void saveObject(Dog d, String path)
+ private static void saveObject(Dog d, String path)
  {
-    try {
+    try
+    {
         FileOutputStream fos = new FileOutputStream(path);
     	ObjectOutputStream oos = new ObjectOutputStream(fos);
     	oos.writeObject(d);
     	oos.flush();
     	oos.close();
-    } catch(Exception e) {
+    } catch(Exception e) 
+    {
+        e.printStackTrace();
     }
  }
  
  
     
 }
-class Dog implements Serializable{
-    
+class Dog implements Serializable
+{
     int age;
     int height;
     String name;
+    
     public Dog(String name, int age, int height)
     {
         this.age = age;
@@ -93,7 +90,8 @@ class Dog implements Serializable{
         this.name = name;
     }
     
-    public String toString(){
+    public String toString()
+    {
         return "Dog: " + name + " is " + age + " old and is " + height + "tall";
     }
     
